@@ -1,17 +1,14 @@
 version: '3.8'
 x-common:
-  database:
-    &db-environment
+  database: &db-environment
     MYSQL_PASSWORD: &db-password "panelfree"
     MYSQL_ROOT_PASSWORD: "panelfree"
-  panel:
-    &panel-environment
+  panel: &panel-environment
     APP_URL: "https://pterodactyl.example.com"
     APP_TIMEZONE: "UTC"
     APP_SERVICE_AUTHOR: "noreply@example.com"
     TRUSTED_PROXIES: "*"
-  mail:
-    &mail-environment
+  mail: &mail-environment
     MAIL_FROM: "noreply@example.com"
     MAIL_DRIVER: "smtp"
     MAIL_HOST: "mail"
@@ -30,9 +27,11 @@ services:
       <<: *db-environment
       MYSQL_DATABASE: "panel"
       MYSQL_USER: "pterodactyl"
+
   cache:
     image: redis:alpine
     restart: always
+
   panel:
     image: ghcr.io/pterodactyl/panel:latest
     restart: always
@@ -48,7 +47,8 @@ services:
       - "/srv/pterodactyl/certs/:/etc/letsencrypt/"
       - "/srv/pterodactyl/logs/:/app/storage/logs"
     environment:
-      <<: [*panel-environment, *mail-environment]
+      <<: *panel-environment
+      <<: *mail-environment
       DB_PASSWORD: *db-password
       APP_ENV: "production"
       APP_ENVIRONMENT_ONLY: "false"
@@ -59,8 +59,3 @@ services:
       DB_HOST: "database"
       DB_PORT: "3306"
       DB_SSLMODE: "disabled"
-networks:
-  default:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
