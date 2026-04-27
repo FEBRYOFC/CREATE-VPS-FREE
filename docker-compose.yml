@@ -5,7 +5,7 @@ x-common:
     MYSQL_ROOT_PASSWORD: "panelfree"
   panel: &panel-environment
     APP_URL: "https://pterodactyl.example.com"
-    APP_TIMEZONE: "UTC"
+    APP_TIMEZONE: "Asia/Jakarta"
     APP_SERVICE_AUTHOR: "noreply@example.com"
     TRUSTED_PROXIES: "*"
   mail: &mail-environment
@@ -21,6 +21,7 @@ services:
   database:
     image: mariadb:10.11
     restart: always
+    command: "--ssl=0"
     volumes:
       - "/srv/pterodactyl/database:/var/lib/mysql"
     environment:
