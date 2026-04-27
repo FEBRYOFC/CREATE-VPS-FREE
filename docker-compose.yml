@@ -38,13 +38,13 @@ services:
   database:
     image: mariadb:10.5
     restart: always
-    # command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - "/srv/pterodactyl/database:/var/lib/mysql"
     environment:
       <<: *db-environment
-      MYSQL_DATABASE: "panelio"
-      MYSQL_USER: "pterodactylio"
+      MYSQL_DATABASE: "panel"
+      MYSQL_USER: "pterodactyl"
   cache:
     image: redis:alpine
     restart: always
